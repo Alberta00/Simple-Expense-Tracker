@@ -37,13 +37,14 @@ export const s = {
     padding: "10px 12px",
   },
   link: (active) => ({
-    color: active ? "#fff" : theme.muted,
-    textDecoration: "none",
-    fontWeight: 600,
-    padding: "8px 12px",
-    borderRadius: 10,
-    background: active ? "rgba(77,161,255,.15)" : "transparent",
-  }),
+  color: active ? "#fff" : theme.muted,
+  textDecoration: "none",
+  fontWeight: 600,
+  padding: "8px 12px",
+  borderRadius: 10,
+  background: active ? "rgba(77,161,255,.15)" : "transparent",
+}),
+
   spacer: { flex: 1 },
   btn: {
     background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`,
