@@ -1,33 +1,36 @@
+// src/ui.js
 export const theme = {
-  bg: "#0b1220",
-  panel: "#0f172a",
-  text: "#e7ecf3",
-  muted: "#94a3b8",
-  border: "#1f2a44",
-  accent1: "#7c9eff",
-  accent2: "#22d3ee",
+  bg: "#0a1228",           // พื้นหลังหลัก (Deep Azure Abyss)
+  panel: "#101b33",        // พื้นหลังการ์ด
+  text: "#e6ebf5",         // ตัวอักษรหลัก
+  muted: "#9aa8c2",        // ตัวอักษรรอง
+  border: "#1f2b45",       // เส้นขอบ
+  accent1: "#4da1ff",      // สีหลักฟ้าอ่อน
+  accent2: "#6de0ff",      // สีเน้นรอง
   danger1: "#ff7c7c",
   danger2: "#ff4d4d",
 };
 
 export const s = {
+  // layout
   container: {
     maxWidth: 1000,
     margin: "0 auto",
     padding: 24,
     color: theme.text,
     minHeight: "100vh",
-    background:
-      "radial-gradient(1200px 800px at 10% 0%, #0d1530 0%, #0b1220 55%, #091120 100%)",
+    background: `radial-gradient(1200px 800px at 10% 0%, #0d1734 0%, ${theme.bg} 55%, #071022 100%)`,
     fontFamily:
       'Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif',
   },
+
+  // navbar + links + buttons (ที่ App.jsx ใช้)
   nav: {
     display: "flex",
     gap: 12,
     alignItems: "center",
     marginBottom: 16,
-    background: "rgba(255,255,255,.03)",
+    background: "rgba(255,255,255,.04)",
     backdropFilter: "blur(6px)",
     border: `1px solid ${theme.border}`,
     borderRadius: 14,
@@ -39,7 +42,7 @@ export const s = {
     fontWeight: 600,
     padding: "8px 12px",
     borderRadius: 10,
-    background: active ? "rgba(124,158,255,.12)" : "transparent",
+    background: active ? "rgba(77,161,255,.15)" : "transparent",
   }),
   spacer: { flex: 1 },
   btn: {
@@ -69,14 +72,14 @@ export const s = {
     fontWeight: 800,
     cursor: "pointer",
   },
+
+  // cards / form inputs / grids
   card: {
-    background:
-      "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02))",
+    background: theme.panel,
     border: `1px solid ${theme.border}`,
     borderRadius: 16,
     padding: 16,
-    boxShadow:
-      "0 6px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.04)",
+    boxShadow: "0 6px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.04)",
   },
   row: { display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" },
   input: {
@@ -97,16 +100,21 @@ export const s = {
     outline: "none",
     minWidth: 160,
   },
+  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 },
+  grid3: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 },
+
+  // kpi / text helper
   kpi: { display: "flex", flexDirection: "column", gap: 6 },
   kpiTitle: { color: theme.muted, fontSize: 13 },
   kpiValue: { fontSize: 28, fontWeight: 800, letterSpacing: ".2px" },
-  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 },
-  grid3: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 },
+  helper: { color: theme.muted, fontSize: 13, marginTop: 8 },
+
+  // table + badges (ที่ ExpenseList ใช้)
   th: {
     textAlign: "left",
     color: theme.muted,
     fontWeight: 700,
-    background: "#0f1a33",
+    background: "#0f1f3b",
     padding: "12px 10px",
     borderBottom: `1px solid ${theme.border}`,
   },
@@ -127,5 +135,4 @@ export const s = {
     borderRadius: "50%",
     background: color || "#64748b",
   }),
-  helper: { color: theme.muted, fontSize: 13, marginTop: 8 },
 };
