@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
-import { collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../auth/AuthProvider";
+import { s } from "../ui";
 
 export default function Categories() {
   const { user } = useAuth();
@@ -10,9 +19,12 @@ export default function Categories() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(db, "users", user.uid, "categories"), orderBy("createdAt", "asc"));
-    return onSnapshot(q, snap => {
-      setItems(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+    const q = query(
+      collection(db, "users", user.uid, "categories"),
+      orderBy("createdAt", "asc")
+    );
+    return onSnapshot(q, (snap) => {
+      setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
     });
   }, [user.uid]);
 
@@ -20,7 +32,9 @@ export default function Categories() {
     e.preventDefault();
     if (!name.trim()) return;
     await addDoc(collection(db, "users", user.uid, "categories"), {
-      name, color, createdAt: new Date()
+      name,
+      color,
+      createdAt: new Date(),
     });
     setName("");
   };
@@ -31,21 +45,44 @@ export default function Categories() {
 
   return (
     <div>
-      <h2>Categories</h2>
-      <form onSubmit={add} style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-        <input placeholder="Category name" value={name} onChange={e=>setName(e.target.value)} />
-        <input type="color" value={color} onChange={e=>setColor(e.target.value)} />
-        <button type="submit">Add</button>
-      </form>
-      <ul style={{ display: "grid", gap: 6 }}>
-        {items.map(c => (
-          <li key={c.id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ width: 14, height: 14, background: c.color, display: "inline-block", borderRadius: 3 }} />
-            <span>{c.name}</span>
-            <button onClick={() => remove(c.id)} style={{ marginLeft: "auto" }}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <div style={{ ...s.card, marginBottom: 12 }}>
+        <h2 style={{ margin: "4px 0 12px" }}>Categories</h2>
+        <form onSubmit={add} style={s.row}>
+          <input
+            placeholder="Category name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={s.input}
+          />
+          <input
+            type="color"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            style={{ ...s.input, padding: 6, minWidth: 60 }}
+          />
+          <button type="submit" style={s.btn}>
+            Add
+          </button>
+        </form>
+        <div style={s.helper}>จัดการหมวดหมู่สำหรับรายจ่ายของคุณ</div>
+      </div>
+
+      <div style={s.card}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {items.map((c) => (
+            <span key={c.id} style={s.badge}>
+              <span style={s.dot(c.color)} />
+              {c.name}
+              <button
+                style={{ ...s.btnSecondary, marginLeft: 8 }}
+                onClick={() => remove(c.id)}
+              >
+                Delete
+              </button>
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

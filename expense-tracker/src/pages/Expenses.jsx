@@ -5,6 +5,7 @@ import DateRangePicker from "../components/DateRangePicker";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../auth/AuthProvider";
+import { s } from "../ui";
 
 export default function Expenses() {
   const { user } = useAuth();
@@ -14,26 +15,45 @@ export default function Expenses() {
   const [cats, setCats] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(db, "users", user.uid, "categories"), orderBy("createdAt", "asc"));
-    return onSnapshot(q, snap => setCats(snap.docs.map(d => ({ id:d.id, ...d.data() }))));
+    const q = query(
+      collection(db, "users", user.uid, "categories"),
+      orderBy("createdAt", "asc")
+    );
+    return onSnapshot(q, (snap) =>
+      setCats(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
+    );
   }, [user.uid]);
 
   return (
     <div>
-      <h2>Expenses</h2>
+      <h2 style={{ margin: "8px 0 12px" }}>Expenses</h2>
       <ExpenseForm />
-      <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom: 12 }}>
-        <DateRangePicker value={range} onChange={setRange} />
-        <select value={categoryId} onChange={e=>setCategoryId(e.target.value)}>
-          <option value="">All categories</option>
-          {cats.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-        </select>
-        <select value={sortBy} onChange={e=>setSortBy(e.target.value)}>
-          <option value="date_desc">Sort: Date ↓</option>
-          <option value="date_asc">Sort: Date ↑</option>
-          <option value="amount_desc">Sort: Amount ↓</option>
-          <option value="amount_asc">Sort: Amount ↑</option>
-        </select>
+      <div style={{ ...s.card, marginBottom: 12 }}>
+        <div style={s.row}>
+          <DateRangePicker value={range} onChange={setRange} />
+          <select
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            style={s.select}
+          >
+            <option value="">All categories</option>
+            {cats.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            style={s.select}
+          >
+            <option value="date_desc">Sort: Date ↓</option>
+            <option value="date_asc">Sort: Date ↑</option>
+            <option value="amount_desc">Sort: Amount ↓</option>
+            <option value="amount_asc">Sort: Amount ↑</option>
+          </select>
+        </div>
       </div>
 
       <ExpenseList range={range} categoryId={categoryId} sortBy={sortBy} />

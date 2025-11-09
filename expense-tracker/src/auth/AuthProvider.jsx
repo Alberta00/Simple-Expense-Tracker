@@ -5,10 +5,12 @@ import { auth } from "../firebase";
 const AuthCtx = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState(undefined); // undefined = checking
   useEffect(() => onAuthStateChanged(auth, setUser), []);
   const logout = () => signOut(auth);
-  return <AuthCtx.Provider value={{ user, logout }}>{children}</AuthCtx.Provider>;
+  return (
+    <AuthCtx.Provider value={{ user, logout }}>{children}</AuthCtx.Provider>
+  );
 }
 
 export function useAuth() {

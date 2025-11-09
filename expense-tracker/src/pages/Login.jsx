@@ -1,7 +1,11 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { s, theme } from "../ui";
 
 export default function Login() {
   const nav = useNavigate();
@@ -26,15 +30,42 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={submit} style={{ display: "grid", gap: 8, maxWidth: 360, margin: "48px auto" }}>
-      <h2>{mode === "login" ? "Login" : "Register"}</h2>
-      <input placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} required />
-      <input placeholder="Password" type="password" value={pw} onChange={e=>setPw(e.target.value)} required />
-      {err && <div style={{ color: "crimson" }}>{err}</div>}
-      <button type="submit">{mode === "login" ? "Login" : "Create account"}</button>
-      <button type="button" onClick={() => setMode(mode === "login" ? "register" : "login")}>
-        {mode === "login" ? "Need an account? Register" : "Have an account? Login"}
-      </button>
-    </form>
+    <div style={{ ...s.card, maxWidth: 420, margin: "48px auto" }}>
+      <h2 style={{ marginTop: 0 }}>{mode === "login" ? "Login" : "Register"}</h2>
+      <form onSubmit={submit} style={{ display: "grid", gap: 10 }}>
+        <input
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={s.input}
+          required
+        />
+        <input
+          placeholder="Password"
+          type="password"
+          value={pw}
+          onChange={(e) => setPw(e.target.value)}
+          style={s.input}
+          required
+        />
+        {err && (
+          <div style={{ color: theme.danger1, fontSize: 14 }}>{err}</div>
+        )}
+        <button type="submit" style={s.btn}>
+          {mode === "login" ? "Login" : "Create account"}
+        </button>
+      </form>
+
+      <div style={{ marginTop: 10 }}>
+        <button
+          onClick={() => setMode(mode === "login" ? "register" : "login")}
+          style={s.btnSecondary}
+        >
+          {mode === "login"
+            ? "Need an account? Register"
+            : "Have an account? Login"}
+        </button>
+      </div>
+    </div>
   );
 }
